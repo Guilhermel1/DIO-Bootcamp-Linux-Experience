@@ -1,1 +1,94 @@
+Docker : Utilização prárica no cenário de Microserviços
 
+- Consultar informação de imagens de banco de dados
+https://hub.docker.com/
+
+- Extressar um container:
+https://loader.io/
+obs: crie um arquivo com o nome apresentado no site na pasta do app e depois use para extressar o container
+
+-------
+- Criar um Swarm (Cluster):
+docker swarm init
+
+- Inserir o token gerado nas outras máquinas do Cluster:
+docker swarm join --token "xxxxxx"
+
+- Verificar os nó do docker (cluster):
+docker node ls
+
+- Replicar dos dockers:
+docker service create "xxxx" --replinas 'numero de clusters' "xxxx"
+obs: usa o comando "--replinas 'numero de clusters'" para replicar quantos clustes serão usados
+
+OBS: oCluster não replica dados automaticamente, é preciso compartilhar os dados:
+- Instalar no computador servido ou learder:
+apt-get install nfs-server -y
+
+- Instalar nos computadores workers:
+apt-get install nfs-common -y
+
+- Indicar para o NFS qual diretório a exportar para os workers:
+nano /etc/exports
+
+- Dentro do arquivo "/etc/exports" incluir:
+"caminho do diretório padrão do app no docker leader" *(rw, sync,subtree_check)
+
+- Executar o arquivo para o NFS exportar o diretório:
+exportfs -ar
+
+- Mostrar a montagem do diretório no servidor leader:
+showmount -e
+
+- Montar o diretório do servidor leader nos workers
+mount -m "versão" "ip:'caminho do servidor'" "caminho do worker" 
+
+-Criar um proxy interno (pode ser feito extereno, mas é pago):
+cd /
+mkdir /proxy
+cd /proxy
+nano nginx.conf
+
+-Inserir informações dentro do proxy:
+http { 
+  
+  upstream all {
+      server xxx.xxx.xxx.xxx:80;
+      server xxx.xxx.xxx.xxx:80;
+      server xxx.xxx.xxx.xxx:80;
+      "replicar para todas os ips das máquinas usadas" - é so um comentário
+  }
+  
+  server {
+       listen 4500;
+       location / {
+              proxy pass http://all/;
+       }
+  }
+  
+}
+
+events { }
+
+- Criando dockerfile e inserindo imagem do proxy dentro do container:
+nano dockerfile
+
+FROM nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+- Subir o container com essas configurações:
+docker build -t proxy-app .
+
+- Visualizar as imagens contidas no docker:
+docker image ls
+
+- Rodar a imagem contina no docker:
+docker container run --name "nome da imagem" -dti -p 4500:4500 "nome a atribuir"
+obs: 4500 é a porta
+
+- Verificar o docker container criado:
+docker container ls
+
+- Extressar o container com o proxy:
+https://loader.io/
+obs: agora a porta usada deve ser a porta do proxy (4500), também é necessário criar um arquivo com o nome apresentado no site na pasta do app e depois use para extressar o container
