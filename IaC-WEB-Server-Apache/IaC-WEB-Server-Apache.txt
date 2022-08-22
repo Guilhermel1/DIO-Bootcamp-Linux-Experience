@@ -1,1 +1,33 @@
+Iac - Infraestrutura como Código: Script de Provisionamento de um Servidor Web (Apache)
 
+- Primeiro logar-se como root
+su
+
+- Criando arquivo script:
+nano "noem do script".sh
+
+- Criando script:
+#!/bin/bash
+
+echo "Atualizando o servidor..."
+
+apt-get update
+apt-get upgrade -y
+apt-get install apache2 -y
+apt-get install unzip -y
+
+echo "Baixando e instalando os arquivos da aplicação..."
+
+cd /tmp
+wget https://github.com/denilsonbonatti/linux-site-dio/archive/refs/heads/main.zip
+unzip main.zip
+cd linux-site-dio-main
+cp -R * /var/www/html/
+
+echo "Servidor finalizado..."
+
+- Dando permissão de execução do arquivo:
+chmod +x "arquivo".sh
+
+-Rodando arquivo .sh
+./"arquivo".sh
