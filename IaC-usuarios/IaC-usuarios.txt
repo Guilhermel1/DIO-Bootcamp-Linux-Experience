@@ -19,10 +19,10 @@ cat /etc/group
 groupdel "grupo"
 
 -------
-Criando arquivo script:
+- Criando arquivo script:
 nano "noem do script".sh
 
-Criando script:
+- Criando script:
 #!/bin/bash
 
 echo "Iniciando script..."
