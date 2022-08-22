@@ -1,9 +1,9 @@
 # DIO-Bootcamp-Linux-Experience
-Projetos do Bootcamp da DIO - Linux Experience
+DIO's Bootcamps Projects - Linux Experience
 
-Iac - infraestrutura como código
+IaC - Infrastructure as Code
 
-Neste diretório estão contidos as infraestruturas para:
-- Criação de usuários, grupos e permissões (Iac)
-- Criação de servidor apache (Iac)
-- Docker para Microserviços
+This directory contais the infrastruture for:
+- Creating users, groups and permissions (IaC)
+- Creating an Apache server (IaC)
+- Docker for Microservices
